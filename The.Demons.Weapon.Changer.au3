@@ -81,6 +81,7 @@ while 1
 		WinSetOnTop($title,"", 1)
 		GUIDelete()
 		CreateGUI()
+		setpos()
 		GUICtrlSetData($msg, $msg_loading)
 		$CShell = _MemoryModuleGetBaseAddress(ProcessExists($cfdat), "cshell.dll")
 		$mem = _MemoryOpen(ProcessExists($cfdat))
@@ -192,15 +193,15 @@ Func additem($data)
 	GuiCtrlCreateBox(325-2,42+23*$itemcount-2,500+2,25+2,3,0x0)
 EndFunc
 Func GuiCtrlCreateBox($left = 0, $top = 0, $width = 100, $height = 100, $brush= 2, $color = 0xFFFFFF)
-	GUICtrlCreateLabel("", $left, $top, $brush, $height)
-	GUICtrlSetBkColor(-1, $color)
-	GUICtrlCreateLabel("", $left+$width-$brush, $top, $brush, $height)
-	GUICtrlSetBkColor(-1, $color)
-	
-	GUICtrlCreateLabel("", $left, $top, $width, $brush)
-	GUICtrlSetBkColor(-1, $color)
-	GUICtrlCreateLabel("", $left, $top+$height-$brush, $width, $brush)
-	GUICtrlSetBkColor(-1, $color)
+GUICtrlCreateLabel("", $left, $top, $brush, $height)
+GUICtrlSetBkColor(-1, $color)
+GUICtrlCreateLabel("", $left+$width-$brush, $top, $brush, $height)
+GUICtrlSetBkColor(-1, $color)
+
+GUICtrlCreateLabel("", $left, $top, $width, $brush)
+GUICtrlSetBkColor(-1, $color)
+GUICtrlCreateLabel("", $left, $top+$height-$brush, $width, $brush)
+GUICtrlSetBkColor(-1, $color)
 EndFunc
 Func st_change($type)
 	GUICtrlSetData($msg, $msg_changing)
@@ -365,8 +366,7 @@ Func scangun()
 		$mask &= "x"
 	Next
 	$scan = _MemoryScanEx_special($mem, $pattern, $mask,False,0x00000000, 0x30000000)+0x19
-	$end = $scan + 0xE84AC60
-	$scan_old = $CShell + 0x95E0E0
+	$scan_old = 0x00000000
 	While $scan <> -3 +0x19
 		If $scan <> -3 Then
 			$str = BinaryToString(StringReplace(_MemoryRead($scan-0x166C, $mem, "byte["&0x20&"]"),"00",""))
@@ -379,8 +379,9 @@ Func scangun()
 			EndIf
 			$scan_old = $scan + 0x3187
 		EndIf
-		$scan = _MemoryScanEx($mem, $pattern, $mask,False,$scan_old,0x30000000)+0x19
+		$scan = _MemoryScanEx_special($mem, $pattern, $mask,False,$scan_old,0x30000000)+0x19
 	WEnd
+	MsgBox(0,"",$step)
 	return $step
 EndFunc
 Func change_gun($index1, $index2)
