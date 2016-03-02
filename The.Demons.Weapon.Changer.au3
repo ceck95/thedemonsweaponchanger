@@ -191,6 +191,17 @@ Func additem($data)
 	GUICtrlSetColor(-1,0x00FF00)
 	GuiCtrlCreateBox(325-2,42+23*$itemcount-2,500+2,25+2,3,0x0)
 EndFunc
+Func GuiCtrlCreateBox($left = 0, $top = 0, $width = 100, $height = 100, $brush= 2, $color = 0xFFFFFF)
+	GUICtrlCreateLabel("", $left, $top, $brush, $height)
+	GUICtrlSetBkColor(-1, $color)
+	GUICtrlCreateLabel("", $left+$width-$brush, $top, $brush, $height)
+	GUICtrlSetBkColor(-1, $color)
+	
+	GUICtrlCreateLabel("", $left, $top, $width, $brush)
+	GUICtrlSetBkColor(-1, $color)
+	GUICtrlCreateLabel("", $left, $top+$height-$brush, $width, $brush)
+	GUICtrlSetBkColor(-1, $color)
+EndFunc
 Func st_change($type)
 	GUICtrlSetData($msg, $msg_changing)
 	If $type = 0 Then
