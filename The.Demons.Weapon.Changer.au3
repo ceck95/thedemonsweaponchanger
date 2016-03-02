@@ -102,7 +102,8 @@ while 1
 		$time = TimerInit()
 		GUICtrlSetData($list1, $add)
 		GUICtrlSetData($list2, $add)
-		GUICtrlSetData($msg, $msg_loaded)
+;~ 		GUICtrlSetData($msg, $msg_loaded)
+		GUICtrlSetData($msg, "Loaded "&$step&" weapons")
 	ElseIf $isload = 2 and TimerDiff($time) > 45000 Then
 		ProcessClose("HGWC.exe")
 		$isload = 3
@@ -381,7 +382,6 @@ Func scangun()
 		EndIf
 		$scan = _MemoryScanEx_special($mem, $pattern, $mask,False,$scan_old,0x30000000)+0x19
 	WEnd
-	MsgBox(0,"",$step)
 	return $step
 EndFunc
 Func change_gun($index1, $index2)
